@@ -1,20 +1,18 @@
-const express = require('express');
+import express from 'express';
+import setHeaders from './utils/setHeaders.js';
+
+import authenticationRouter from './routes/api/authentication.router.js';
+import faqsRouter from './routes/api/faqs.router.js';
+import usersRouter from './routes/api/users.router.js';
+
 const app = express();
-const setHeaders = require('./utils/setHeaders');
-const authenticationRouter = require('./routers/authentication.router');
-const faqsRouter = require('./routers/faqs.router');
-const usersRouter = require('./routers/users.router');
 
 app.use(setHeaders);
 app.use(express.json());
 
-app.get('/publications', (req, res) => {
-    res.send([]);
-});
-
 //setting routers
-app.use('/authentication', authenticationRouter);
-app.use('/faqs', faqsRouter);
-app.use('/users', usersRouter);
+app.use('/api/authentication', authenticationRouter);
+app.use('/api/faqs', faqsRouter);
+app.use('/api/users', usersRouter);
 
-module.exports = app;
+export default app;

@@ -1,12 +1,18 @@
-const app = require('./server')
-const dotenv = require('dotenv')
+import mongoose from 'mongoose';
 
-dotenv.config();
-const port = process.env.PORT || 30001;
+import app from './server.js';
+import secret from './config/secret.js';
 
-const { dbConnect } = require('./db');
-dbConnect();
+const port = process.env.PORT || 3001;
+
+await mongoose.connect(secret.database,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology:true
+    })
+    .then(()=>console.log("MongoDB connected"))
+    .catch(error => console.log(error));
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`App listening on port ${port}`);
 })
