@@ -1,5 +1,4 @@
 import express from 'express';
-import setHeaders from './utils/setHeaders.js';
 
 import authenticationRouter from './routes/api/authentication.router.js';
 import faqsRouter from './routes/api/faqs.router.js';
@@ -7,7 +6,6 @@ import usersRouter from './routes/api/users.router.js';
 
 const app = express();
 
-app.use(setHeaders);
 app.use(express.json());
 
 //setting routers
