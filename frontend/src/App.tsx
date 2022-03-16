@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Container } from 'reactstrap';
+import { Provider } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css'
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import { loadUser } from './flux/actions/authActions';
+
+const App = () => {
+
+  useEffect(() => {
+    store.dispatch(loadUser());
+  })
+  
   return (
     <div className="App">
       <header className="App-header">

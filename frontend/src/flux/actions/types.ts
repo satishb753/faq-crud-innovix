@@ -1,4 +1,4 @@
-export const GET_FAQ = 'GET_FAQ';
+export const GET_FAQS = 'GET_FAQS';
 export const ADD_FAQ = 'ADD_FAQ';
 export const DELETE_FAQ = 'DELETE_FAQ';
 export const FAQS_LOADING = 'FAQS_LOADING';
