@@ -1,35 +1,32 @@
 import React, { useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { Provider } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import logo from './logo.svg';
-import './App.css';
+import AppNavbar from './components/AppNavbar';
 
 import { loadUser } from './flux/actions/authActions';
+import store from './flux/store';
+import FaqModal from './components/faqModal';
+import FaqList from './components/faqList';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 const App = () => {
 
   useEffect(() => {
     store.dispatch(loadUser());
   })
-  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className='App'>
+        <AppNavbar />
+        <Container>
+          <FaqModal />
+          <FaqList />
+        </Container>
+      </div>
+    </Provider>
   );
 }
 

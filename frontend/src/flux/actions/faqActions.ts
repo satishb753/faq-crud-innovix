@@ -7,7 +7,7 @@ import { IFaq } from "../../types/interfaces";
 export const getFaqs = () => (dispatch: Function) => {
     dispatch(setFaqsLoading());
     axios
-        .get('/api/items')
+        .get('http://localhost:3001/api/faqs')
         .then(res =>
             dispatch({
                 type:GET_FAQS,
@@ -24,10 +24,10 @@ export const addFaq = (faq: IFaq) => (
     getState: Function
 ) => {
     axios
-        .post('/api/faqs', faq, tokenConfig(getState))
+        .post('http://localhost:3001/api/faqs', faq, tokenConfig(getState))
         .then(res =>
             dispatch({
-                type: ADD_ITEM,
+                type: ADD_FAQ,
                 payload: res.data
             })
         )
@@ -41,10 +41,10 @@ export const deleteFaq = (id: string) => (
     getState: Function
 ) => {
     axios
-        .delete(`/api/faqs/${id}`, tokenConfig(getState))
+        .delete(`http://localhost:3001/api/faqs/${id}`, tokenConfig(getState))
         .then(res =>
             dispatch({
-                type: DELETE_ITEM,
+                type: DELETE_FAQ,
                 payload: id
             })
         )
@@ -52,3 +52,9 @@ export const deleteFaq = (id: string) => (
             dispatch(returnErrors(err.response.data, err.response.status))
         );
 };
+
+export const setFaqsLoading = () => {
+    return {
+        type: FAQS_LOADING
+    };
+}

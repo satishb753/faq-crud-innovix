@@ -80,7 +80,7 @@ export interface IFaqModal {
 
 export interface IFaqReduxProps extends IAuthReduxProps {
     faq: {
-        items: IExistingFaq[]
+        faqs: IExistingFaq[]
     };
 }
 

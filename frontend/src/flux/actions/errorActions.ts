@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERROS } from "./types";
+import { GET_ERRORS, CLEAR_ERRORS } from "./types";
 import { IMsg } from "../../types/interfaces";
 
 // Return Errors
@@ -12,6 +12,6 @@ export const returnErrors = (msg: IMsg, status: number, id: any = null) => {
 // Clear Errors
 export const clearErrors = () => {
     return {
-        type: CLEAR_ERROS
+        type: CLEAR_ERRORS
     };
 };
