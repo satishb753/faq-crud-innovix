@@ -35,6 +35,12 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    projects: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Project',
+        required: false,
+        trim: true
+    }],
     privilege: [{
         isActivate: {
             type: Boolean,
@@ -56,7 +62,7 @@ const UserSchema = new Schema({
     tokens: [{
         type: String,
         required: true
-    }]
+    }],
 });
 
 

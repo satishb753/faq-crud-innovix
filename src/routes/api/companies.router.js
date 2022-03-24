@@ -51,18 +51,27 @@ router.get('/company/:id', async (req, res) => {
 
     Company.findOne({ _id: id }).populate({
             path:'employees',
-            populate:{ 
+            populate: { 
                     path: '_id',
                     model: 'User',
                     select: {
                         '_id': 1,
                         'name': 1,
                         'email': 1
+                    },
+                    populate: {
+                        path: 'projects',
+                        model: 'Project',
+                        select: {
+                            '_id': 1,
+                            'name': 1,
+                            'company_name': 1
+                        }
                     }
                 }
         })
-        .exec(function(err,company){
-            res.status(200).json({company});
+        .exec(function(err,companies){
+            res.status(200).json({companies});
             if(err)
             console.log(err);
         });

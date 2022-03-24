@@ -16,29 +16,25 @@ const CompanySchema = new Schema({
     },
     offices: [
         {
-            location: {             // "Populate Virtuals"
+            location: {
                 type: String,
                 required: false,
                 trim: true,
             }
         }
     ],
-    employees: [        // "Populate Virtuals"
+    employees: [
         {
             _id: {
                 type: Schema.Types.ObjectId,
                 ref: 'User',
-                required: true
+                required: true,
+                trim:true
             }
         }
     ]
 });
 
-// CompanySchema.virtual('employees._id', {
-//     ref: 'User',
-//     localField:'_id',
-//     foreignField:'_id'
-// })
 
 const Company = model('Company', CompanySchema);
 
