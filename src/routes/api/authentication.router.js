@@ -1,86 +1,45 @@
 import { Router } from "express";
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import _ from 'lodash';
 
-import secret from '../../config/secret.js';
 import User from "../../models/User.js";
 import auth from "../../middleware/auth.js";
 
-const { JWT_SECRET } = secret;
+import { tokenChecker, privilegeChecker } from '../../helpers/auth.js';
+
 const router = Router();
 
-router.post('/login', async(req, res) => {
-    const { email, password } = req.body;
-
-    if(!email || !password) {
-        return res.status(400).json({msg: 'Please enter all fields'});
-    }
-
-    try {
-        //Check for existing user
-        const user = await User.findOne({email});
-        if(!user) throw Error('User does not exist');
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) throw Error('Invalid credentials');
-
-        const token = jwt.sign({ id:user._id }, JWT_SECRET, { expiresIn: 3600});
-        if(!token) throw Error('Could not sign the token');
-
-        res.status(200).json({
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email
-            }
+router.post('/login', async (req, res) => {
+    const data = _.pick(req.body, ['email', 'password']);
+    await User.findByCredentials(data.email, data.password).then((userData) => {
+        userData.generateAuthToken().then((token) => {
+	    const {status, uid, name, email, access, iat} = jwt.decode(token);
+	    const payload = {token, status, uid, name, email, access, iat};
+            res.header('x-auth', token).send(payload);
         });
-    }
-    catch(e) {
-        res.status(400).json({msg: e.message});
-    }
+    }).catch((e) => {
+        res.status(400).send('invalid');
+    });
 });
 
 
 router.post('/register', async(req, res) => {
-    const { name, email, password } = req.body;
+ 
+    //check privilige:
+    // const allowAccess = privilegeChecker(req.userInfo.access, ['isAdmin']);
+    // if(!allowAccess){
+    //     res.status(403).send('invalid');
+    //     return;  //exit the function to make sure the user without privilige can't create a new user.
+    // }
+    const data = req.body;
+    const user = new User(data);
+    user.save().then((doc) => {
+        res.send('success');
+    }).catch((e) => {
+        // writeLog(e, {file: 'server.js:94'});
+        res.send('invalid');
+    });
 
-    if(!name || !email || !password) {
-        return res.status(400).json({ msg: 'Please enter all fields'});
-    }
-
-    try {
-        const user = await User.findOne({ email });
-        if(user) throw Error('User already exists');
-
-        const salt = await bcrypt.genSalt(10);
-        if(!salt) throw Error('Something went wrong with bcrypt');
-
-        const hash = await bcrypt.hash(password, salt);
-        if(!hash) throw Error('Something went wrong while hashing the password');
-
-        const newUser = new User({
-            name,
-            email,
-            password: hash
-        });
-
-        const savedUser = await newUser.save();
-        if(!savedUser) throw Error('Something went wrong while saving the user');
-
-        const token = jwt.sign({ id: savedUser._id }, JWT_SECRET, {expiresIn:3600});
-
-        res.status(200).json({
-            token,
-            user: {
-                id: savedUser.id,
-                name: savedUser.name,
-                email: savedUser.email
-            }
-        });
-    } catch (e) {
-        res.status(400).json({ error: e.message});
-    }
 });
 
 router.get('/user', auth, async (req, res) => {
@@ -92,5 +51,19 @@ router.get('/user', auth, async (req, res) => {
         res.status(400).json({msg: e.message});
     }
 })
+
+//  Input : void, identified by session cookie.
+//  HTTP Success : 200 and message.
+//  HTTP Errors : 400, 500, 503.
+router.post("/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(500).send({ message: "Logout failed", err });
+      }
+      req.sessionID = null;
+      req.logout();
+      res.status(200).send({ message: "Logout success" });
+    });
+  });
 
 export default router;

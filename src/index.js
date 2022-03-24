@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import app from './server.js';
 import secret from './config/secret.js';
 
-const port = process.env.PORT || 3001;
+
+const port = process.env.PORT || 7777;
 
 await mongoose.connect(secret.database,
     {

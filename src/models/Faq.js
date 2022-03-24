@@ -26,6 +26,6 @@ const FaqSchema = new Schema({
     }
 });
 
-const Faq = model('faq', FaqSchema);
+const Faq = model('Faq', FaqSchema);
 
 export default Faq;

@@ -20,4 +20,15 @@ router.get('/', async(req, res) => {
     }
 });
 
+router.get('/nosql-injection', async(req, res) => {
+    let user = await User.findOne({
+        name : req.body.name,
+        password : req.body.password
+    });
+
+    console.log(user);
+
+    res.status(200).json(user);
+});
+
 export default router;
