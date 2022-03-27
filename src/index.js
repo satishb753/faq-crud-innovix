@@ -4,7 +4,7 @@ import app from './server.js';
 import secret from './config/secret.js';
 
 
-const port = process.env.PORT || 7777;
+const port = process.env.PORT || 8081;
 
 await mongoose.connect(secret.database,
     {
