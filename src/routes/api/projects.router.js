@@ -8,9 +8,9 @@ const router = Router();
 
 router.get('/', async(req, res) => {
 
-    let companies = await Company.find();
-    console.log(companies.length);
-    res.status(200).json({companies});
+    let projects = await Project.find();
+    console.log(projects.length);
+    res.status(200).json({projects});
 
 });
 
