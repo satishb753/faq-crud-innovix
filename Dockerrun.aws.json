@@ -1,9 +1,23 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Ports": [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
     {
-      "ContainerPort": "80",
-      "HostPort": "8080"
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "faq-crud-innovix-satish"
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "faq-crud-innovix-satish",
+          "containerPath": "/usr/src/app",
+          "readOnly": true
+        }
+      ]
     }
   ]
 }
