@@ -15,5 +15,5 @@ await mongoose.connect(secret.database,
     .catch(error => console.log(error));
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+    console.log(`Docker App listening on port ${port}`);
 })
