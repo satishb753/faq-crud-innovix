@@ -3,6 +3,7 @@ node_modules/
 client/node_modules/
 frontend/node_modules/
 experiments/
+src/config/*
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
