@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import auth from "../../middleware/auth.js";
+import { tokenChecker } from "../../helpers/auth.js";
 
 import Company from "../../models/Company.js";
 
 const router = Router();
 
-router.get('/', async(req, res) => {
+router.get('/', tokenChecker, async(req, res) => {
 
     let companies = await Company.find();
     console.log(companies.length);
@@ -14,7 +15,7 @@ router.get('/', async(req, res) => {
 
 });
 
-router.get('/search/:q', async(req, res) => {
+router.get('/search/:q', tokenChecker, async(req, res) => {
 
     let q = req.params.q;
     let companies = await Company.find({name: { $regex: q, $options: 'i'}});
@@ -25,7 +26,7 @@ router.get('/search/:q', async(req, res) => {
 
 });
 
-router.post('/', async (req, res) => {
+router.post('/', tokenChecker, async (req, res) => {
 
     let company = [];
     let reqBodyLen = req.body.length;
@@ -81,7 +82,7 @@ router.get('/company/:id', async (req, res) => {
 
 // Update Company details
 
-router.put('/company/:id', async (req, res) => {
+router.put('/company/:id', tokenChecker, async (req, res) => {
     const { name, headQuarter, offices, employees } = req.body;
     let id = req.params.id;
     let update = await Company.findOneAndUpdate({ _id: id }, { name, headQuarter, offices, employees });
@@ -95,7 +96,7 @@ router.put('/company/:id', async (req, res) => {
 
 // Add new Employess to the Company
 
-router.put('/employees/add', async(req, res) => {
+router.put('/employees/add', tokenChecker, async(req, res) => {
     
     const { companyId, employeeIds } = req.body;
     let company = await Company.findById({_id: companyId});
@@ -131,7 +132,7 @@ router.put('/employees/add', async(req, res) => {
 
 // Delete company
 
-router.delete('/:id', auth, async(req, res) => {
+router.delete('/:id', tokenChecker, async(req, res) => {
 
     try {
         const company = await Company.findById(req.params.id);
