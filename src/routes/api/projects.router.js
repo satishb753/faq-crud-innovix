@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import auth from "../../middleware/auth.js";
-
 import Project from "../../models/Project.js";
 
 const router = Router();

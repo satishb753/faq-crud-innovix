@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
-import secret from '../config/secret.js';
 
-const { JWT_SECRET } = secret;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export default (req, res, next) => {
     const token = req.header('x-auth-token');

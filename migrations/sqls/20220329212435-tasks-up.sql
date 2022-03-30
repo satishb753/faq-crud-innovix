@@ -1,0 +1,1 @@
+CREATE TABLE `taskcrud`.`tasks` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `title` VARCHAR(128) NULL DEFAULT NULL , `due-date` DATETIME NULL DEFAULT NULL , `attachment` LONGBLOB NULL DEFAULT NULL , `user_id` INT NULL DEFAULT NULL , PRIMARY KEY (`id`), INDEX `tasks_users_index` (`user_id`)) ENGINE = INNODB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;

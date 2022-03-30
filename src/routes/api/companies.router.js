@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import auth from "../../middleware/auth.js";
 import { tokenChecker } from "../../helpers/auth.js";
 
 import Company from "../../models/Company.js";

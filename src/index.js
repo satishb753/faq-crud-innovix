@@ -12,6 +12,13 @@ await mongoose.connect(process.env.MONGO_URI,
     .then(()=>console.log("MongoDB connected"))
     .catch(error => console.log(error));
 
+
+
+// con.connect(function(err) {
+//   if (err) throw err;
+//   console.log("MySQL Connected!");
+// });
+
 app.listen(port, () => {
     console.log(`Docker App listening on port ${port}`);
 })
